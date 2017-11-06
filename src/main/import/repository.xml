@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<content xmlns:j="http://www.jahia.org/jahia/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0">
+    <modules jcr:primaryType="jnt:modules">
+        <github-oauth-connector j:dependencies="default jahia-oauth"
+                                j:modulePriority="0"
+                                j:moduleType="module"
+                                j:title="Github OAuth Connector"
+                                jcr:primaryType="jnt:module">
+                
+                <portlets jcr:primaryType="jnt:portletFolder"/>
+                <files jcr:primaryType="jnt:folder"/>
+                <contents jcr:primaryType="jnt:contentFolder"/>
+                <templates j:rootTemplatePath="/base" jcr:primaryType="jnt:templatesFolder">
+                    <files jcr:primaryType="jnt:folder"/>
+                    <contents jcr:primaryType="jnt:contentFolder"/>
+                    <github-oauth-view j:defaultTemplate="false"
+                                 j:hiddenTemplate="true"
+                                 j:invertCondition="false"
+                                 j:requireLoggedUser="false"
+                                 j:requirePrivilegedUser="false"
+                                 jcr:primaryType="jnt:contentTemplate">
+                        <pagecontent jcr:primaryType="jnt:contentList">
+                            <githuboauthview jcr:primaryType="joant:githubOAuthView"/>
+                        </pagecontent>
+                    </github-oauth-view>
+                </templates>
+                
+            </github-oauth-connector>
+    </modules>
+</content>

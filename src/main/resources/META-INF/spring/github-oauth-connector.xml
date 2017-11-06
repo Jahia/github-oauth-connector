@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:osgi="http://www.eclipse.org/gemini/blueprint/schema/blueprint"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.eclipse.org/gemini/blueprint/schema/blueprint http://www.eclipse.org/gemini/blueprint/schema/blueprint/gemini-blueprint.xsd">
+
+    <osgi:reference id="jahiaOAuthService" interface="org.jahia.modules.jahiaoauth.service.JahiaOAuthService" availability="mandatory"/>
+
+    <osgi:service ref="githubConnectorImpl" interface="org.jahia.modules.jahiaoauth.service.ConnectorService">
+        <osgi:service-properties>
+            <entry key="connectorServiceName" value="GitHubApi"/>
+        </osgi:service-properties>
+    </osgi:service>
+
+    <bean id="githubConnectorImpl" class="org.jahia.modules.githuboauthconnector.impl.GithubConnectorImpl" init-method="onStart">
+        <property name="serviceName" value="GitHubApi"/>
+        <property name="protectedResourceUrl" value="https://api.github.com/user"/>
+        <property name="availableProperties">
+            <list>
+                <map>
+                    <entry key="name" value="email"/>
+                    <entry key="canBeRequested">
+                        <value type="boolean">true</value>
+                    </entry>
+                    <entry key="propertyToRequest" value="email"/>
+                    <entry key="valueType" value="email"/>
+                </map>
+                <map>
+                    <entry key="name" value="name"/>
+                    <entry key="canBeRequested">
+                        <value type="boolean">true</value>
+                    </entry>
+                    <entry key="propertyToRequest" value="name"/>
+                    <entry key="valueType" value="string"/>
+                </map>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.jahia.modules.githuboauthconnector.action.ConnectToGithub">
+        <property name="name" value="connectToGithubAction"/>
+        <property name="requireAuthenticatedUser" value="false"/>
+        <property name="jahiaOAuthService" ref="jahiaOAuthService"/>
+        <property name="githubConnectorImpl" ref="githubConnectorImpl"/>
+        <property name="jcrTemplate" ref="jcrTemplate"/>
+    </bean>
+
+    <bean class="org.jahia.modules.githuboauthconnector.action.GithubOAuthCallback">
+        <property name="name" value="githubOAuthCallbackAction"/>
+        <property name="requireAuthenticatedUser" value="false"/>
+        <property name="jahiaOAuthService" ref="jahiaOAuthService"/>
+        <property name="githubConnectorImpl" ref="githubConnectorImpl"/>
+        <property name="jcrTemplate" ref="jcrTemplate"/>
+    </bean>
+
+    <bean class="org.jahia.services.content.decorator.JCRNodeDecoratorDefinition">
+        <property name="decorators">
+            <map>
+                <entry key="joant:githubOAuthSettings" value="org.jahia.modules.jahiaoauth.decorator.ConnectorNode"/>
+            </map>
+        </property>
+    </bean>
+</beans>
