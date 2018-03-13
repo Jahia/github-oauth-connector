@@ -13,7 +13,7 @@
         </osgi:service-properties>
     </osgi:service>
 
-    <bean id="githubConnectorImpl" class="org.jahia.modules.githuboauthconnector.impl.GithubConnectorImpl" init-method="onStart">
+    <bean id="githubConnectorImpl" class="org.jahia.modules.githuboauthconnector.impl.GithubConnectorImpl">
         <property name="serviceName" value="GitHubApi"/>
         <property name="protectedResourceUrl" value="https://api.github.com/user"/>
         <property name="availableProperties">
